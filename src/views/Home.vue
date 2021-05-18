@@ -1,18 +1,48 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+  <HelloWorld :giveyou="givemessage" @catchmessage="displaymessage">
+  </HelloWorld>
+  <todo :all="tall" @catchmessage2="displaymessage"></todo>
+  <div v-for="(todo,index) in todos" :key="index">
+    <input type="checkbox">
+    {{todo}}
+    <v-btn
+        @click="deletetodo(index)"
+        type="button"
+        color="purple"
+    >
+      消去
+    </v-btn>
+  </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+<script>
+  import Vue from 'vue'
+  import HelloWorld from '../components/HelloWorld.vue'
+  import Todo from "@/components/todo.vue";
+  export default Vue.extend({
+    name: 'Home',
+    data: () => ({
+      givemessage:'all',
+      tall:true,
+      todos:[],
+    }),
+    components: {
+      Todo,
+      HelloWorld,
+    },
+    props: {
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class Home extends Vue {}
+    },
+    methods: {
+      displaymessage(message){
+        this.todos.push(message)
+      },
+      deletetodo: function(index){
+        this.todos.splice(index,1)
+      },
+    },
+
+  })
 </script>
